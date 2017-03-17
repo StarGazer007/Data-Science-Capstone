@@ -1,0 +1,50 @@
+
+
+/* slide titles */
+.section .reveal .state-background {
+background: black;
+}
+.section .reveal p {
+
+color: rgb(255, 255, 255);
+text-align:left; 
+line-height: 0.1em;
+#margin-top: 70px;
+}
+.section .reveal h1, .section .reveal h2, .section {
+
+color: #b2a173;
+margin-top: 50px;
+}
+.reveal pre code {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  background-color: #ccc;
+  color: black;
+  text-align:center; 
+  font-size: 40px;
+  #position: fixed; top: 90%;
+  #text-align:center; width:100%;
+  }
+.reveal h3 { 
+  font-size: 65px;
+  color: #000 ;
+}
+
+/* heading for slides with two hashes ## */
+.reveal .slides section .slideContent h2 {
+   font-size: 37px;
+   font-weight: bold;
+   color: green;
+}
+
+/* ordered and unordered list styles */
+.reveal ul, 
+.reveal ol {
+    font-size: 37px;
+    color: #FF5733;
+    list-style-type: square;
+  
+  .reveal h1, .reveal h2, .reveal h3 {
+  word-wrap: normal;
+  -moz-hyphens: none;
+  }
