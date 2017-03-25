@@ -1,0 +1,16 @@
+#Improvements needed
+-a good dictionary is a must
+removing as much junk from the language file is important
+
+#Compressing and Decompressing
+build routines to de/compress the dictionary
+
+# Target file size is 9mb
+# Target accurancy 
+   1st word 5%
+   2nd word 10%
+   3rd word 50%
+   4th word 70%
+   5th word 80%
+
+   
