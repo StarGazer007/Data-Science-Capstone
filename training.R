@@ -3,8 +3,6 @@ ptm <- proc.time()
 
 # Preload required R librabires
 
-status <- "Loading Libraries"
-
 library(tm)
 library(RWeka)
 library(R.utils)
