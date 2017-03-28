@@ -5,7 +5,6 @@ shinyUI( fluidPage(
             theme ="slate.css",
             style ="overflow: hidden;",
   
-
             # Top Bar
             fluidRow( 
               style =  "display: block;
@@ -13,7 +12,6 @@ shinyUI( fluidPage(
                        overflow: hidden;
                        #background-color: #275494; 
                        
-                     
                        background-image: url('top.png');
 
                        height: auto; 
@@ -25,12 +23,13 @@ shinyUI( fluidPage(
                           
                             style = "display:block;
                                      clear:both;
-                                     height: 250px;
-                                     overflow:hidden;"
+                                     height: 220px;
+                                     overflow:hidden;
+                                     padding:10px;"
                            )
                     ),
       
-              column(10, h1(style="font-size:68px;
+              column(10, tags$h1(style="font-size:68px;
                                    padding-top: 50px;
                                    color:#78ACC4;
                                    text-align:center; ", 
@@ -39,14 +38,14 @@ shinyUI( fluidPage(
                      
                      ),
       
-              column(1, a(target="_blank", href="https://github.com/StarGazer007/Data-Science-Capstone.git", 
-                            img(src = "github-ribbon.png", 
-                                    style="display:block;
-                                           position: absolute;
-                                           right:0;
-                                           height:250px;
-                                           overflow:hidden;
-                                           clear:both;", 
+              column(1, tags$a(target="_blank", href="https://github.com/StarGazer007/Data-Science-Capstone.git", 
+                        tags$img(src = "github-ribbon.png", 
+                                 style="display:block;
+                                        position: absolute;
+                                        right:0;
+                                        height:250px;
+                                        overflow:hidden;
+                                        clear:both;", 
                                     align="right"
                                 )
                             )
@@ -55,36 +54,39 @@ shinyUI( fluidPage(
             # User Input
             fluidRow(
                       style = "display: block; 
-                               #background:yellow;
-                               height: 40%;
-                               margin:5% 0;
-                               padding:0 25px;
-                               clear:both;",
+                               margin:2% 0;
+                               ",
                       column(12,
                              style = "display: block; 
-                                      height: auto;
-                                      margin:0 12.5%; 
+                                      margin:0 25%; 
                                       clear: both;",
 
-                             textInput("textIn", label = h3("Enter a sentence:", style="font-size:44px;"),  width = "70%"),
-                             helpText("Type in a sentence above, hit enter (or press the button below).")
+                             textInput("textIn", label = h3("Enter a sentence:", value = "", style="font-size:44px;"),  width = "50%"),
+                             helpText("Type in a sentence above")
                          
                       )),
-  
+            # System Prediction
             fluidRow(
-                     style = "
-                              height: 30%; 
-                              min-height: 250px;
-                              clear:both;
-                              padding:20px 0;",
-                     
                      
                      column(12,
-                            h2(textOutput("sentence"), align="center"),
-                            h1(textOutput("predicted"), align="center", style="display:block;color:white, background-color:blue; font-size:46px; ")
-                            #hr()
-                            #h3("Top 5 Possibilities:", align="center"),
-                            #div(tableOutput("alts"), style="color:white;", align="center")  
+                            tags$h2("The next word could be",align="center",
+                                                        style="font-size:65px"),
+                           
+                            #h2(textOutput("sentence"), align="center",
+                                                      # style="font-size:65px;color:aqua;"),
+                            
+                            actionButton("action", label = "Action"),
+                          
+                            tags$h2(textOutput("predicted"), align="center", 
+                                                        style="display:block;
+                                                               margin:0 auto;
+                                                               color:white;
+                                                               padding: 15px;
+                                                               width: 250px;
+                                                               height: 100px;
+                                                               background-color:#78acc4; 
+                                                               font-size:46px; ")
+                      
                      )       
                    
             ),
@@ -99,7 +101,7 @@ shinyUI( fluidPage(
               column(6,
                      a(target="_blank", href="https://swiftkey.com", 
                        img(src = "swift-key.png",
-                           style = "opacity:0.45;width:170px;padding:0 15px;") ),
+                           style = "opacity:0.45;width:180px;padding:0 15px;") ),
                      a(target="_blank", href="https://www.coursera.org/", 
                        img(src = "coursera.png",
                            style = "opacity:0.45;width:170px;padding:0 15px;") ),

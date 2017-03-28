@@ -1,26 +1,16 @@
-library(shiny)
-library(RSQLite)
+suppressPackageStartupMessages(c(library(shiny),library(shinythemes)) )
 
-source("helper.R")
-#source("lib/compessor.R")
-#source("lib/decompressor.R")
+source("prediction.R")
 
-setwd("L:/git/Data-Science-Capstone/ShinyApp")
 
-shinyServer(function(input, output){
+shinyServer(function(input, output) {
   
-
+  wordPrediction <- reactive({
+    text <- input$textIn
+    textInput <- inputCleaner(text)
+    wordCount <- length(textInput)
+    wordPrediction <- nextWordPrediction(wordCount,textInput)})
   
-  # Trigrams
-  afreq<-readRDS("L:/git/Data-Science-Capstone/ShinyApp/data/dictionary.RDS")
-  
-  
-  library(compiler)
-  getPrediction.=cmpfun(getPrediction)
-  
-#output prediction
-  output$predicted <- renderText({
-    as.character(getPrediction.(input$textIn))
-  })
-  
+  output$predicted <- renderPrint(wordPrediction())
+  #output$sentence <- renderText({input$textIn}, quoted = FALSE)
 })

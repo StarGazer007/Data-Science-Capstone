@@ -1,0 +1,31 @@
+
+suppressPackageStartupMessages(c(
+  library(shiny),
+  library(RSQLite)
+))
+
+source("functions.R")
+#source("helper.R")
+gd <- getwd()
+dir <- paste0(gd,"/data")
+dic <-loadDictionary(dir)
+
+
+shinyServer(function(input, output){
+    
+    predictWord <- reactive( {
+      
+      text <- input$textIn
+      textInput <- cleanInput(text)
+      wordCount <- length(textInput)
+      
+      pword <- nextWordPrediction(dic, wordCount, textInput)
+      
+      return(pword)
+    })
+    output$sentence <- renderText({input$textIn}, quoted = FALSE)
+    output$predicted <- renderText(predictWord())
+    #output$predicted <- renderText(whereAreWe(), quoted = FALSE)
+     
+  
+})

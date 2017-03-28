@@ -4,6 +4,12 @@
 .section .reveal .state-background {
 background: black;
 }
+
+.reveal .state-background {
+background: #FDF6E3;
+background-image:url("L:/git/Data-Science-Capstone/Presentation/assets/blury-dock.jpg");
+background-size: cover;
+}
 .section .reveal p {
 
 color: rgb(255, 255, 255);
@@ -18,16 +24,48 @@ margin-top: 50px;
 }
 .reveal pre code {
   font-family: Verdana, Arial, Helvetica, sans-serif;
-  background-color: #ccc;
-  color: black;
+  background-color: #3F3F3F;
+  color: #EEE8D5;
+  border: none;
   text-align:center; 
-  font-size: 40px;
+  font-size: 30px;
   #position: fixed; top: 90%;
-  #text-align:center; width:100%;
+  #text-align:center;
   }
 .reveal h3 { 
   font-size: 65px;
-  color: #000 ;
+  color: white;
+}
+.reveal h4 { 
+  font-size: 35px;
+  color: #B58900;
+}
+
+.reveal a {
+color: #CB4B16;
+font-weight: bold;
+
+}
+
+.reveal a:not(.image) {
+    color: #2AA198;
+    text-decoration: none;
+    -webkit-transition: color .15s ease;
+    -moz-transition: color .15s ease;
+    -ms-transition: color .15s ease;
+    -o-transition: color .15s ease;
+    transition: color .15s ease;
+}
+
+.reveal blockquote {
+    padding: 40px;
+    color: white;
+    font-size: 50px;
+    font-weight: bold;
+    text-align: center;
+    background-color: transparent;
+    border: none;
+    font-style: italic;
 }
 
 /* heading for slides with two hashes ## */
@@ -41,10 +79,11 @@ margin-top: 50px;
 .reveal ul, 
 .reveal ol {
     font-size: 37px;
-    color: #FF5733;
+    color: #b58900;
     list-style-type: square;
   
   .reveal h1, .reveal h2, .reveal h3 {
   word-wrap: normal;
   -moz-hyphens: none;
   }
+

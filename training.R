@@ -10,14 +10,11 @@ library(dplyr)
 library(parallel)
 
 
-
-status <- "Libraries Loaded"
-
 #Set options
 options(stringsAsFactors = FALSE)
 options(mc.cores=4)
 
-setwd("L:/Cousera/git/Data-Science-Capstone")
+setwd("L:/git/Data-Science-Capstone")
 
 status <- "Options set"
 
@@ -26,28 +23,20 @@ status <- "Options set"
 pathname <- paste0(getwd(), "/data/final/en_US/")
 fnames <- c("blogs","news","twitter")
 fileNames <-list.files(pathname, recursive=TRUE)
-portion <- as.numeric(0.05)
+portion <- as.numeric(1)
 
 loadFiles <-function (path, file){
   
   con <- file(paste0(path, file) )
   n <- readLines(con,encoding = "UTF-8", skipNul = TRUE, warn=FALSE)
-  
   return(n)
-  
-  
 }
 
-sampleFile <- function (file, portion) {
+sampleFile <- function(file, portion) {
   sample <- sample(file, length(file) * portion)
   return(sample)
 }
 
-
-writeSample <- function (file, dir, n) {
-  writeLines(file, paste0(dir,"/",n))
-  
-}
 
 blog <-loadFiles (pathname,fileNames[1])
 news<-loadFiles (pathname,fileNames[2])
@@ -64,13 +53,16 @@ data.sample <- c(blog.sample , news.sample, twitter.sample )
 rm(blog, news, twitter)
 gc()
 
-writeSample(data.sample, "sample", "all.txt")
-
-rm(blog.sample,news.sample,twitter.sample)
+saveRDS(data.frame(data.sample),"sample/dictionary.rds")
 
 
-corpus <- VCorpus(DirSource("sample", encoding = "UTF-8"),
-                  readerControl = list(language = "en"))
+
+rm(blog.sample,news.sample,twitter.sample,data.sample)
+gc()
+
+corpus <-VCorpus(DirSource("sample", encoding = "UTF-8"),
+         readerControl = list(language = "lat"))
+
 
 #Clean the text
 cleanCorpus <- function (corpus){
@@ -102,18 +94,17 @@ gc()
 
 
 # Tokenizer functions
-
-QuintgramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 5, max = 5))
-QuadgramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 4, max = 4))
-TrigramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 3, max = 3))
+#UnigramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 1, max = 1))
 BigramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 2, max = 2))
-UnigramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 1, max = 1))
+TrigramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 3, max = 3))
+QuadgramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 4, max = 4))
+#QuintgramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 5, max = 5))
 
-quint.tdm<- TermDocumentMatrix(corpus.cl, control = list(tokenize = QuintgramTokenizer))
-quad.tdm<- TermDocumentMatrix(corpus.cl, control = list(tokenize = QuadgramTokenizer))
-tri.tdm<- TermDocumentMatrix(corpus.cl, control = list(tokenize = TrigramTokenizer))
+#uni.tdm<- TermDocumentMatrix(corpus.cl, control = list(tokenize = UnigramTokenizer))
 bi.tdm<- TermDocumentMatrix(corpus.cl, control = list(tokenize = BigramTokenizer))
-uni.tdm<- TermDocumentMatrix(corpus.cl, control = list(tokenize = UnigramTokenizer))
+tri.tdm<- TermDocumentMatrix(corpus.cl, control = list(tokenize = TrigramTokenizer))
+quad.tdm<- TermDocumentMatrix(corpus.cl, control = list(tokenize = QuadgramTokenizer))
+#quint.tdm<- TermDocumentMatrix(corpus.cl, control = list(tokenize = QuintgramTokenizer))
 
 rm(corpus.cl,data.sample)
 gc()
@@ -122,27 +113,33 @@ gc()
 #Build Prediction Tables
 library(dtplyr)
 library(slam)
+library(data.table)
 
 convertNgram <- function (tdm) {
+  #dt <- removeSparseTerms(tdm, 0.01)
   colnames(tdm) <- "freq"
-  dt <- row_sums(tdm)
-  dt <- data.table(grams=names(dt), freq=dt)
+  tdm <- row_sums(tdm)
+  dt <- data.table(grams=names(tdm), freq=tdm)
   setkey(dt,grams) 
   
   return(dt)
   
 }
 
-rm(uni.tdm,bi.tdm,tri.tdm,quad.tdm, quint.tdm)
-gc()
-
-
-uniFreq <- convertNgram(uni.tdm)
-
-
+#uniFreq <- convertNgram(uni.tdm)
 biFreq <-convertNgram(bi.tdm)
 triFreq <-convertNgram(tri.tdm)
 quadFreq <-convertNgram(quad.tdm)
-quintFreq <-convertNgram(quint.tdm)
+
+saveRDS(biFreq,"ShinyApp/data/bigram.rds")
+saveRDS(triFreq,"ShinyApp/data/trigram.rds")
+saveRDS(quadFreq,"ShinyApp/data/quadgram.rds")
+
+#quadFreq <-convertNgram(quad.tdm)
+#quintFreq <-convertNgram(quint.tdm)
+
+#rm(uni.tdm,bi.tdm,tri.tdm,quad.tdm, quint.tdm)
+#gc()
 
 runtm <- proc.time() - ptm 
+

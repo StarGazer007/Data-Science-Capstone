@@ -1,0 +1,62 @@
+## ShineServer code to call the function predictWord
+library(shiny); 
+library(stringr); 
+library(tm)
+load("probdata.RData")
+predict <- function(str)
+{
+  #str <- stemDocument(VCorpus(VectorSource(str))[[1]])[[1]]
+  #str <- removeWords(str,stopwords("english"))
+  str <- removePunctuation(str)
+  str <- stripWhitespace(str)
+  str <- tolower(str)
+  vec <- unlist(strsplit(str," "))
+  len <- length(vec)
+  print(vec)
+  if (len==0) 
+  {
+    return(utf$X1[1:3])
+  }
+  if (vec[len]%in%utf$X1)
+  {
+    if (len>=3)
+    {
+      index <- which(qtf$X3==vec[len] & qtf$X2==vec[len-1] & qtf$X1==vec[len-2])
+      if (length(index)>0) 
+      {
+        return(qtf$X4[index[1:3]])
+      }
+    }
+    if (len>=2)
+    {
+      index <- which(ttf$X2==vec[len] & ttf$X1==vec[len-1])
+      if (length(index)>0) 
+      {
+        return(ttf$X3[index[1:3]])
+      }
+    }
+    index <- which(btf$X1==vec[len])
+    if (length(index)>0) 
+    {
+      return(btf$X2[index[1:3]])     
+    }
+  }
+  return(utf$X1[1:3])
+}
+
+shinyServer(function(input, output) {
+  output$prediction <- renderPrint({
+  
+    result <- predictWord(input$textIn)
+    output$message <- renderText({message})
+    #return(result)
+  
+    
+ 
+  });
+
+  output$sentence <- renderText({
+    input$textIn});
+  }
+
+)
